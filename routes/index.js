@@ -1,1 +1,1 @@
-export { router as menuRouter } from './menu.js'
+export { router as menuRouter } from './menu-routes.js'
