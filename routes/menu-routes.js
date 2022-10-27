@@ -1,14 +1,20 @@
 import express from 'express'
 import {
-  addBrand,
   getMenu,
-  showBrands,
+  getUsers,
+  login,
+  signUp,
+  updateUser,
 } from '../controllers/menu-controller.js'
 
 export const router = express.Router()
 
 router.get('/', getMenu)
 
-router.get('/brands/:id', showBrands)
+router.get('/users/:id', getUsers)
 
-router.post('/', addBrand)
+router.post('/signup', signUp)
+
+router.post('/login', login)
+
+router.post('/update', updateUser)
