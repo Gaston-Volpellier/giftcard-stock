@@ -1,5 +1,6 @@
 import HttpError from '../models/http-error.js'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 import { Users } from '../models/Users.js'
 
 export const signUp = async (req, res) => {
@@ -54,7 +55,18 @@ export const login = async (req, res) => {
     }
 
     if (await bcrypt.compare(password, foundUser.password)) {
-      res.status(200).json({ username: foundUser.name, email: foundUser.email })
+      const data = {
+        sub: foundUser.id,
+        name: foundUser.name,
+      }
+      const token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET)
+
+      // save token into user request headers.
+      res.status(200).json({
+        username: foundUser.name,
+        email: foundUser.email,
+        token: token,
+      })
     } else {
       const error = new HttpError('Incorrect password.', 400)
       throw error
@@ -62,5 +74,16 @@ export const login = async (req, res) => {
   } catch (error) {
     console.error(error.code)
     res.json('Error logging in: ' + error)
+  }
+}
+
+export const authenticateToken = (req, res, next) => {
+  const token = req.headers['token']
+
+  const verified = token && jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+  if (verified) {
+    return next()
+  } else {
+    res.status(401).json({ error: 'Invalid access token.' })
   }
 }

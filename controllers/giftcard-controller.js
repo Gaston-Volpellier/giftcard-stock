@@ -1,15 +1,15 @@
 import { Giftcards } from '../models/Giftcards.js'
 
 export const getGiftcard = async (req, res) => {
-  const coupon = Giftcards.findOne({
+  const giftcard = Giftcards.findOne({
     where: {
       unico: req.params.unico,
     },
   })
 
-  const foundCoupon = await coupon
+  const foundGiftcard = await giftcard
 
-  if (!foundCoupon) {
+  if (!foundGiftcard) {
     res.status(400).json({ error: 'Giftcard not found.' })
   } else {
     const {
@@ -18,7 +18,7 @@ export const getGiftcard = async (req, res) => {
       vencimiento,
       mensaje,
       telefonopara,
-    } = foundCoupon
+    } = foundGiftcard
     res.status(200).json({
       unico: unico,
       fecha_creacion: fecha_creacion,

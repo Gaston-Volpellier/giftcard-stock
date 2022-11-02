@@ -26,6 +26,10 @@ export const Giftcards = db.define(
       type: Sequelize.STRING,
       allowNull: true,
     },
+    cliente_de: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
     cliente_para: {
       type: Sequelize.STRING,
       allowNull: true,
