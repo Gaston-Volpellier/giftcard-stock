@@ -1,9 +1,8 @@
 import express from 'express'
 import {
+  getBrands,
   getMenu,
   getUsers,
-  login,
-  signUp,
   updateUser,
 } from '../controllers/menu-controller.js'
 
@@ -13,8 +12,6 @@ router.get('/', getMenu)
 
 router.get('/users/:id', getUsers)
 
-router.post('/signup', signUp)
-
-router.post('/login', login)
-
 router.post('/update', updateUser)
+
+router.get('/brands', getBrands)

@@ -1,44 +1,46 @@
 import { Sequelize } from 'sequelize'
 import db from '../db/connection.js'
 
-export const Users = db.define(
-  'User',
+export const Brands = db.define(
+  'Brand',
   {
-    id: {
+    codigo: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,
     },
-    name: {
+    nombre: {
       type: Sequelize.STRING,
       allowNull: true,
     },
-    lastname: {
+    empresastock: {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+    },
+    estado: {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+    },
+    fee: {
+      type: Sequelize.REAL,
+      allowNull: true,
+    },
+    porcentaje: {
+      type: Sequelize.REAL,
+      allowNull: true,
+    },
+    logo: {
       type: Sequelize.STRING,
       allowNull: true,
     },
-    email: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    adress: {
-      type: Sequelize.STRING,
+    vencimiento: {
+      type: Sequelize.INTEGER,
       allowNull: true,
-    },
-    city: {
-      type: Sequelize.STRING,
-      allowNull: true,
-    },
-    phone: {
-      type: Sequelize.STRING,
-    },
-    password: {
-      type: Sequelize.STRING,
     },
   },
   {
-    tableName: 'giftcard_clientes',
+    tableName: 'empresa',
     timestamps: false,
   },
 )
