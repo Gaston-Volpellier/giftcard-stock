@@ -1,10 +1,9 @@
-import HttpError from '../models/http-error.js'
 import { Users } from '../models/Users.js'
 import { Brands } from '../models/Brands.js'
 import dbConnect from './server-controller.js'
 
 export const getMenu = (req, res) => {
-  res.status(200).send('<h1>Menu page<h1>')
+  res.status(200).send('<h2>Menu page<h2>')
 }
 
 export const getBrands = async (req, res, next) => {
@@ -21,22 +20,16 @@ export const getBrands = async (req, res, next) => {
   }
 }
 
-export const getUsers = (req, res) => {
-  Users.findByPk(req.params.id)
-    .then((user) => {
-      if (!user) {
-        const error = new HttpError(
-          'Could not find any user with that ID.',
-          404,
-        )
-        throw error
-      }
-      res.status(200).json(user)
-    })
-    .catch((error) => {
-      console.log('Error getUsers: ' + error)
-      res.status(400).json(error)
-    })
+export const getUsers = async (req, res, next) => {
+  const user = await Users.findByPk(req.params.id).catch((error) => {
+    return next(error)
+  })
+
+  if (!user) {
+    return res.status(404).send({ message: 'User not found.' })
+  }
+
+  return res.status(200).send(user)
 }
 
 export const updateUser = async (req, res) => {
@@ -44,17 +37,19 @@ export const updateUser = async (req, res) => {
 
   await Users.update(
     {
-      name: name,
-      lastname: lastname,
-      adress: adress,
-      city: city,
-      phone: phone,
-      email: email,
+      name,
+      lastname,
+      adress,
+      city,
+      phone,
+      email,
     },
     {
       where: {
-        id: id,
+        id,
       },
+      returning: true,
+      plain: true,
     },
   )
     .then((result) => {

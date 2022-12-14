@@ -59,7 +59,9 @@ export const login = async (req, res) => {
         sub: foundUser.id,
         name: foundUser.name,
       }
-      const token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET)
+      const token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '2h',
+      })
 
       // save token into user request headers.
       res.status(200).json({
